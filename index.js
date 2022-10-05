@@ -30,7 +30,9 @@ const start = async () => {
 
     try {
       if (text === "/start") {
-        await UserModel.create({ chatId });
+        if (!(await UserModel.findOne({ chatId }))) {
+          await UserModel.create({ chatId });
+        }
         await bot.sendSticker(
           chatId,
           "https://tlgrm.ru/_/stickers/06c/d14/06cd1435-9376-40d1-b196-097f5c30515c/1.webp"
@@ -88,7 +90,7 @@ const start = async () => {
 const startGame = async (chatId) => {
   await bot.sendMessage(chatId, "Загадываю число от 0 до 9 ...");
   const randomNumber = Math.floor(Math.random() * 10);
-  console.log(randomNumber);
+  // console.log(randomNumber);
   chats[chatId] = randomNumber;
   await bot.sendMessage(chatId, "Отгадай это число и напиши мне", gameOptions);
 };
